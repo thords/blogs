@@ -1,9 +1,11 @@
-# 全面总结Oridinals生态Insribe的大小和格式限制及费率等现状
-截止到目前Ordinal Inscriptions一共有120多万个了，作为普通用户而言，其实一直想跃跃欲试，早期整个生态非常缺乏Inscribe的工具，还需要运行bitcoin的全节点，成本很高；后来则出现了第三方的代Inscribe工具，比如ordinalbot、trygamma、ordswap等平台，还有针对于bitcoin域名细分领域则还有unisat。
-## Inscibe file的大小限制是多少？
+#一文带你读懂 Oridinals生态Inscription实操
+Ordinal 作为BTC上最新的生态，启动数月时间就受到了市场的热烈追捧，Inscriptions120多万的Inscribe数量足以说明其火爆程度。发烧友们非常希望Inscribe到自己的Inscription，分得市场早期的巨大红利。然而Ordinal 生态还属于早期，发烧友们不仅要承受bitcoin全节点运行的高成本，还不得不面对Inscribe工具匮乏的问题。下面我将给各位发烧友分享一下我的实操经验
+## Inscriptionde 工具现状
+目前市面上非常缺乏Inscribe的工具，这是因为运行bitcoin的全节点，成本很高；后来则出现了第三方的代Inscribe工具，比如ordinalbot、trygamma、ordswap等平台，还有针对于bitcoin域名细分领域则还有unisat。
+## Inscibe file的大小限制
 当我开始在这些平台上Inscribe的时候，给我带来的第一个困惑就是很多平台Inscribe的图片大小限制在只有300～380kb左右。因为很早的时候读到Taprootwizard这个项目Inscribe了一整个区块大小的[Insciption #655](https://ordinals.com/inscription/0301e0480b374b32851a9462db29dc19fe830a7f7d7a88b81612b9d42099c0aei0)，并且所以理论上来说，bitcoin单个交易的最大weight为4 million，即1,000,000vByte，那么似乎Inscribe允许的大小应该略小于1M，所以一开始我还以为是平台的限制。但是当我尝试在regtest测试网Inscribe超过400kb的图片时，广播交易会报错`sendrawtransaction RPC error: {"code":-26,"message":"tx-size"}`,这又是为何？这就引发了我的思考，为什么是这样的？通过进一步继续查阅bitcoin文档发现，节点实际上默认只支持广播`MAX_STANDARD_TX_WEIGHT=400,000`的交易，那么加上隔离见证交易中witness所需的weight只有普通交易的1/4，因此实际上支持的文件会小于400kb，再扣除交易中所需的签名和输出信息等，基本上最多允许的也就是380kb。这也说明了taprootwizard应该是得到了矿工的特殊支持才Inscribe了一整个区块。
 
-## Inscribe支持那些种格式呢？
+## Inscribe适用格式
 
 除了图片外，Ordinals官网又非常多有意思的Inscription，比如[Inscription #466](https://ordinals.com/inscription/521f8eccffa4c41a3a7728dd012ea5a4a02feed81f41159231251ecf1e5c79dai0)是一个非常简单的html小游戏，所以我就在那些格式可以Inscribe呢？
 通过查阅Ord的项目源码发现，Ord官方的代码中支持这些格式：
@@ -39,7 +41,8 @@
 
 此外，我们还实现了主网Inscription的数据索引，可以识别出项目方/创作者的地址，从而可以实现版税功能，期望后续像以太坊生态那样更好地激励Creators，来壮大整个Bitcoin NFT的生态。
 
-> 🎁🎁🎁 我们将为项目方提供体验更好的批量Inscribe工具，也欢迎项目方到我们平台来进行体验，限定前5个项目方Inscribe打2折🚀🚀🚀 。
+> 🎁🎁🎁 我们将为项目方提供体验更好的批量Inscribe工具，
+> 欢迎项目方到我们平台来进行体验，限定前5个项目方Inscribe打2折🚀🚀🚀 。
 
 ### Contact Us
 - [Twitter](https://twitter.com/thordsio)
