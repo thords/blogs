@@ -1,10 +1,13 @@
-# Ordinal生态Inscribe的技术探索
+# 深度分析Ordinals系列:Inscribe
 
 ## 背景
 Ordinal 作为BTC上最新的生态，启动数月时间就受到了市场的热烈追捧，Inscriptions120多万的Inscribe数量足以说明其火爆程度。但是由于没有像Metamask那样成熟的浏览器钱包，Ordinal生态本身mint的交互与以太坊生态也有很大不同，整个生态的工具也比较匮乏，因此普通用户一开始参与进来的门槛还是很高的。
-在2月份的时候关注到了Bitcoin NFT Ordinals就对其很感兴趣，在对其基本的技术原理研究后，对此非常感兴趣，于是就拉着小伙伴一起成立了团队[Thords Labs](https://thords.io)开始开发Ordinals NFT的marketplace相关的基础设施，其中要解决的两个核心问题就是如何创建Inscription(即Bitcoin NFT)以及如何构建marketplace，本文关注的则是Inscription创建过程Inscribe(即mint)。Oridinals NFT是直接存储在bitcoin上的，早期Inscribe需要运行Bitcoin全节点，成本很高；随着开发者们对Ordinals的认识不断加深，则出现了第三方的代Inscribe工具，比如ordinalbot、trygamma、ordswap等平台，还有针对于bitcoin域名细分领域则还有unisat。但是我们在开发的过程中发现目前这些平台其实都是基于代mint的方式，用户需要信任平台讲Inscription转给自己，团队经过不断探讨提出了一种不需要全节点、不需要代mint的用户自签名Inscribe的方式。
+
+在2月份的时候关注到了Bitcoin NFT Ordinals就对其很感兴趣，在对其基本的技术原理研究后，对此非常感兴趣，于是就拉着小伙伴一起成立了团队[Thords Labs](https://thords.io)开始开发Ordinals NFT的marketplace相关的基础设施，其中要解决的两个核心问题就是如何创建Inscription(即Bitcoin NFT)以及如何构建marketplace，本文关注的则是Inscription创建过程Inscribe(即mint)。
+
+Oridinals NFT是直接存储在bitcoin上的，早期Inscribe需要运行Bitcoin全节点，成本很高；随着开发者们对Ordinals的认识不断加深，则出现了第三方的代Inscribe工具，比如ordinalbot、trygamma、ordswap等平台，还有针对于bitcoin域名细分领域则还有unisat。但是我们在开发的过程中发现目前这些平台其实都是基于代mint的方式，用户需要信任平台讲Inscription转给自己，团队经过不断探讨提出了一种不需要全节点、不需要代mint的用户自签名Inscribe的方式。
 本文首先总结现有Inscription本身的大小和格式限制，及Inscribe工具的基本方法，最后对我们团队提出的完全去中心话的Inscibe方法基本原理进行介绍。文末有彩蛋，不要错过哦～
-## Inscriptionde 工具现状
+## Inscription工具现状
 ### NFT文件大小限制
 刚开始我们团队对所有平台的Inscribe功能进行了体验，这些平台Inscribe的图片大小限制在300～380kb左右，这让我们很困惑。因为很早的时候读到Taprootwizard这个项目第一个NFT[Insciption #655](https://ordinals.com/inscription/0301e0480b374b32851a9462db29dc19fe830a7f7d7a88b81612b9d42099c0aei0)有3.9M，几乎占据了一整个区块大小的，并且所以理论上来说，bitcoin单个交易的最大weight为4 million，即1,000,000vByte，那么似乎Inscribe允许的大小应该略小于1M，所以一开始我们还以为是平台的限制。
 ![image](./taprootwizards.png)
@@ -38,7 +41,7 @@ Ordinal 作为BTC上最新的生态，启动数月时间就受到了市场的热
 采用去中心化的方式去Inscribe需解决的核心问题是，用户如何在前端对这两笔交易签名。由于ord没有提供这样的API接口，我们只能完全从零开始编写代码，通过对Ord现有的Inscribe规范进行了分析，我们实现了一套完全兼容Ord的JS-SDK，使得用户可以直接在前端构造这两笔交易，并进行签名和交易广播。这种方式实现了用户**不需要自建全节点，就可以完全去中心化的Inscribe**，具有成本低且安全的优点。
 
 此外，我们花了一些时间对交易手续费进行了模拟计算，由于手续费估算准确，相对于其他平台根据字节数预估手续费的方式，我们(Thords)实现了交易费率一致的情况下，当前市场上最低的手续费，和当前市场上手续费最低的Unisat平台基本。下图是Fee rate分别为5 sats/vB和15 sats/vB的各平台手续费的对比(数据来源于Unisat和Ordinalswallet，Total fee为commit和reveal交易的所有费用之和):
-![image](./fee_6.png)
+![image](./fee_6.png =300*300)
 ![image](./fee_15.png)
 
 ### Regtest测试网免费体验
