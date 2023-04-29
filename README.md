@@ -38,5 +38,5 @@ Inscribe, discover, buy & sell the best and latest Bitcoin NFTs on the the leadi
 ## 团队背景
 - Po, R&D: 某985高校博士，主要负责Ord相关底层协议研发.
 - PayFv, CTO: 10多年互联网从业经验，曾在腾讯、恒生电子等公司工作，作为架构师构建过亿级TPS的春晚摇一摇红包业务，在区块链领域也有三年经验，技术涉及智能合约、Substrate开发等
-- 1px, 产品经理: 10多年互联网从业经验，一直在腾讯大湘网担任产品总监。
+- 1px, 产品经理: 10多年互联网从业经验，曾任职腾讯地方站产品总监。
 - Cyber Elaina, 运营总监: 某Top5 高校研究生，有4年运营经验，曾参与比特大陆IPO，在Matrixport做金融产品运营。
